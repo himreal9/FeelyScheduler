@@ -1,0 +1,45 @@
+{% extends "temp1.html" %}
+{% block body %}
+
+<div class="container">
+<form action="" method="POST">
+            <div class="form">
+                <div class="note">
+                
+                    <p>Manager Login</p>
+                </div>
+  <div class="form-content">
+	<div class="input-group">
+		<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-user-secret"></i> </span>
+		 </div>
+		<input name="unam" class="form-control" placeholder="Email" required>
+	</div>
+<br>
+
+
+    <div class="input-group">
+		<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-key"></i> </span>
+		 </div>
+	    <input class="form-control" name="pas" placeholder="Password" type="password" required>
+	</div>
+	{% with messages=get_flashed_messages() %}
+                {% if messages %}
+                <br>
+                <div class="alert alert-danger" role="alert">
+                    *{{messages[0]}}
+                </div>
+                {% endif %}
+                {% endwith %}
+                            
+                            <div class="form-group text-center">
+                                <input type="submit" value="Login" name="ln" class="btnSubmit"/>
+                            </div>
+                        </div>
+                            
+                        </div>
+                    </div>
+</form>                  
+                </div>
+{% endblock %}
