@@ -71,6 +71,7 @@ def con2():
         r=cur.fetchall()
         h=[]
         h1=[]
+        h2=[]
         cur.execute("select CURDATE()")
         mysql.connection.commit()
         d=cur.fetchall()
@@ -78,11 +79,17 @@ def con2():
             d=i['CURDATE()']
         for i in r:
             h.append(i["date"]+' '+i["time"])
-        cur.execute("SELECT * FROM time WHERE status NOT LIKE '%open%' order by dt desc")
+        p=session['euser']
+        cur.execute(f"SELECT * FROM time WHERE status NOT LIKE '%open%' and status like '%{p}%' order by dt desc")
         mysql.connection.commit()
         r=cur.fetchall()
         for i in r:
-            h1.append(i["date"]+' '+i["time"])
+            h1.append(i["date"]+' '+i["time"]+" (Booked By You)")
+        cur.execute(f"SELECT * FROM time WHERE status NOT LIKE '%open%' and status not like '%{p}%' order by dt desc")
+        mysql.connection.commit()
+        r=cur.fetchall()
+        for i in r:
+            h2.append(i["date"]+' '+i["time"])
         if request.method=='POST':
             k = request.form.getlist('list')
             for i in k:
@@ -91,7 +98,7 @@ def con2():
                 cur.execute("update time set status=%s where dt like %s",('Meeting with'+session['euser'],dt))
                 mysql.connection.commit()
             return redirect('/emp')
-        return render_template('empmain.html',h=h,d=d,h1=h1)
+        return render_template('empmain.html',h=h,d=d,h1=h1,h2=h2)
     else:
         return redirect('/')
     
